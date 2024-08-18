@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyScript SQL Example</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+</head>
+<body>
+    <h1>PyScript SQL Example</h1>
+    <input type="text" id="input-name" placeholder="Enter your name">
+    <button id="submit-button">Submit</button>
+    <p id="response"></p>
+
+    <py-script>
+        from js import document, fetch
+
+        def submit_name(event):
+            name = document.querySelector('#input-name').value
+            if name:
+                fetch('/add_name', {
+                    'method': 'POST',
+                    'headers': {
+                        'Content-Type': 'application/json'
+                    },
+                    'body': JSON.stringify({'name': name})
+                }).then(response => response.json())
+                  .then(data => {
+                      if (data.success) {
+                          document.querySelector('#response').textContent = 'Name added successfully!';
+                      } else:
+                          document.querySelector('#response').textContent = 'Failed to add name.';
+                  });
+            else:
+                document.querySelector('#response').textContent = 'Please enter your name.'
+
+        document.querySelector('#submit-button').addEventListener('click', submit_name)
+    </py-script>
+</body>
+</html>
